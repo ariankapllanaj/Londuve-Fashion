@@ -26,6 +26,19 @@ The site is served from `https://<username>.github.io/<repo-name>/`; the workflo
 sub-path to Vite as `BASE_PATH`, so asset URLs work whatever the repo is called.
 One-time setup in GitHub: **Settings → Pages → Build and deployment → Source: GitHub Actions**.
 
+## Deploy (Hostpoint or any classic web hosting)
+
+1. `npm run build` (without `BASE_PATH`, so paths start at the domain root).
+2. In the Hostpoint Control Panel, add the domain as a website and turn on SSL for it.
+3. Upload **the contents of `dist/`** (not the folder itself) into the website's document root,
+   e.g. `www/<domain>/`, with an SFTP/FTP client (FileZilla, Cyberduck). Include the hidden `.htaccess`.
+4. Open `https://<domain>/` and check the 3D bottle, images and fonts load.
+
+`public/.htaccess` (copied into `dist/`) forces HTTPS, sets the file types for the 3D model and fonts,
+and adds caching. If the host ever shows *500 Internal Server Error*, delete `.htaccess`.
+After moving to the domain: point the Stripe success URL to `https://<domain>/?paid=1` and set the
+`og:image` meta tag in `index.html` to the full `https://<domain>/og-image.jpg`.
+
 ## Before going live — `src/config.js`
 
 | Setting | What it does |
@@ -61,7 +74,7 @@ How it behaves:
 - `checkoutUrl` **set** → *Order now* opens the payment page in the same tab, in the visitor's language
   (`?locale=en|de|fr`), shows "Pay with TWINT · Visa · …" under the price and a secure-payment note.
 - After paying, the checkout sends the customer to `…/?paid=1` → a thank-you banner
-  ("Your order is confirmed. Delivery takes about 2 weeks.") and the address bar is cleaned.
+  ("Your order is confirmed. Delivery takes 10–16 days.") and the address bar is cleaned.
   `?paid=1` is only a courtesy message — anyone can type it. The real confirmation is the
   payment in the Stripe/Payrexx dashboard and its email receipt.
 - *Order via WhatsApp* stays as a second option.
@@ -102,8 +115,11 @@ never redrawn) and set `logo: 'img/payment/twint.svg'` in `CONFIG.paymentMethods
 3. **Courage** — the Blender bottle rises, fills with perfume, rotates; *WEAR COURAGE, LEAVE LEGACY*; HUD callouts.
 4. **Extrait** — the *42% Oil Concentration · Extrait de Parfum* moment: counter fills with liquid + concentration scale.
 5. **Notes** — Top: White Musk · Heart: Rose, Lily, Jasmine · Base: Vanilla, Salted Caramel.
-   Each photo is replaced by the next with a WebGL shader transition (molten-gold front, RGB split) as you scroll.
-6. **Order** — campaign photo, specs, price, delivery timeline, **Order now** (opens the payment link when `checkoutUrl` is set, otherwise pre-fills the contact form) and Order via WhatsApp.
+   All four notes are shown side by side in one screen (2 × 2 on phones). As the section scrolls in, each photo is
+   revealed inside its arch by a WebGL shader (molten-gold front, RGB split, scan-lines), left to right: Top → Heart → Base.
+   On desktop, hovering a note adds a ripple/zoom and dims the others. The top-note photo (`public/img/note-nutmeg.webp`)
+   is still the old nutmeg image — replace it with a White Musk photo (same name, portrait ~940 × 1670) when the client sends one.
+6. **Order** — campaign photo, specs, price, delivery timeline (10–16 days), **Order now** (opens the payment link when `checkoutUrl` is set, otherwise pre-fills the contact form) and Order via WhatsApp.
 7. **Contact** — form + WhatsApp, Instagram, Email.
 
 Languages: **EN / DE / FR** (switcher in the header; auto-detects the browser language, `?lang=de` forces one).
@@ -115,7 +131,7 @@ German uses Swiss spelling (ss, no ß). Slogans stay in English in every languag
 index.html               page markup
 src/main.js              scroll choreography, loader, language, form
 src/scene/Experience.js  3D stage: bottle materials, sparkles, halo rings, bloom/post-processing
-src/scene/NotesGallery.js + shaders.js   notes transition shader and all GLSL
+src/scene/NotesGallery.js + shaders.js   notes reveal shader (one canvas for all four arches) and all GLSL
 src/styles/main.css      design (colors/fonts as CSS variables at the top)
 public/models/courage.glb   web 3D bottle (exported from Blender)
 public/img/               logos (transparent PNG), note photos, campaign photo

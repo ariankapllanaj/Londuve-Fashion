@@ -44,7 +44,7 @@
     <span class="thanks__star" aria-hidden="true"></span>
     <div class="thanks__body">
       <p class="thanks__title" data-i18n="thanks.title">Thank you.</p>
-      <p class="thanks__text" data-i18n="thanks.text">Your order is confirmed. Delivery takes about 2 weeks.</p>
+      <p class="thanks__text" data-i18n="thanks.text">Your order is confirmed. Delivery takes 10–16 days.</p>
     </div>
     <button type="button" class="thanks__close" data-i18n-aria="thanks.close" aria-label="Close">
       <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m6 6 12 12M18 6 6 18"/></svg>
@@ -161,51 +161,44 @@
       </div>
     </section>
 
-    <!-- 05 · NOTES — aroma notes after the perfume -->
+    <!-- 05 · NOTES — all four aroma notes in one view -->
     <section class="notes" id="notes" data-section="05" data-name="NOTES">
-      <div class="sticky">
-        <header class="notes__head">
-          <p class="eyebrow mono" data-i18n="notes.kicker">The Composition</p>
-          <h2 class="notes__title" data-i18n="notes.title">Olfactory Notes</h2>
-        </header>
+      <header class="notes__head">
+        <p class="eyebrow mono" data-i18n="notes.kicker">The Composition</p>
+        <h2 class="notes__title" data-i18n="notes.title">Olfactory Notes</h2>
+      </header>
 
-        <ol class="pyramid mono" aria-label="Fragrance pyramid">
-          <li data-level="0"><i></i><span data-i18n="level.top">Top</span></li>
-          <li data-level="1"><i></i><span data-i18n="level.heart">Heart</span></li>
-          <li data-level="2"><i></i><span data-i18n="level.base">Base</span></li>
-          <b class="pyramid__fill"></b>
-        </ol>
-
-        <figure class="notes__frame">
-          <canvas class="notes__canvas" aria-hidden="true"></canvas>
-          <img class="notes__fallback" src="/img/note-nutmeg.webp" alt="" />
-          <span class="frame-corner frame-corner--tl"></span><span class="frame-corner frame-corner--tr"></span>
-          <span class="frame-corner frame-corner--bl"></span><span class="frame-corner frame-corner--br"></span>
-          <figcaption class="notes__counter mono"><span class="notes__i">01</span> / 04</figcaption>
-        </figure>
-
-        <div class="notes__list">
-          <article class="note is-active" data-index="0">
-            <p class="note__level mono"><span class="note__num">01</span><span data-i18n="level.top">Top</span></p>
-            <h3 class="note__name" data-i18n="note.1.name">White Musk</h3>
-            <p class="note__text" data-i18n="note.1.text">Soft, clean white musk opens the trail — the first spark of courage.</p>
-          </article>
-          <article class="note" data-index="1">
-            <p class="note__level mono"><span class="note__num">02</span><span data-i18n="level.heart">Heart</span></p>
-            <h3 class="note__name" data-i18n="note.2.name">Rose · Lily · Jasmine</h3>
-            <p class="note__text" data-i18n="note.2.text">A dew-kissed floral heart of rose, lily and jasmine. Soft, yet assured.</p>
-          </article>
-          <article class="note" data-index="2">
-            <p class="note__level mono"><span class="note__num">03</span><span data-i18n="level.base">Base</span></p>
-            <h3 class="note__name" data-i18n="note.3.name">Vanilla</h3>
-            <p class="note__text" data-i18n="note.3.text">Dark vanilla pods lay a smooth, sensual foundation.</p>
-          </article>
-          <article class="note" data-index="3">
-            <p class="note__level mono"><span class="note__num">04</span><span data-i18n="level.base">Base</span></p>
-            <h3 class="note__name" data-i18n="note.4.name">Salted Caramel</h3>
-            <p class="note__text" data-i18n="note.4.text">Molten caramel with a hint of salt — the legacy that lingers.</p>
-          </article>
-        </div>
+      <div class="notes__grid">
+        <canvas class="notes__canvas" aria-hidden="true"></canvas>
+        <span class="notes__rail" aria-hidden="true"><b></b></span>
+        <article class="note" data-index="0">
+          <span class="note__node" aria-hidden="true"></span>
+          <figure class="note__media"><img class="note__img" src="/img/note-nutmeg.webp" alt="" decoding="async" /></figure>
+          <p class="note__level mono"><span class="note__num">01</span><span data-i18n="level.top">Top</span></p>
+          <h3 class="note__name" data-i18n="note.1.name">White Musk</h3>
+          <p class="note__text" data-i18n="note.1.text">Soft, clean white musk opens the trail — the first spark of courage.</p>
+        </article>
+        <article class="note" data-index="1">
+          <span class="note__node" aria-hidden="true"></span>
+          <figure class="note__media"><img class="note__img" src="/img/note-florals.webp" alt="" decoding="async" /></figure>
+          <p class="note__level mono"><span class="note__num">02</span><span data-i18n="level.heart">Heart</span></p>
+          <h3 class="note__name" data-i18n="note.2.name">Rose · Lily · Jasmine</h3>
+          <p class="note__text" data-i18n="note.2.text">A dew-kissed floral heart of rose, lily and jasmine. Soft, yet assured.</p>
+        </article>
+        <article class="note" data-index="2">
+          <span class="note__node" aria-hidden="true"></span>
+          <figure class="note__media"><img class="note__img" src="/img/note-vanilla.webp" alt="" decoding="async" /></figure>
+          <p class="note__level mono"><span class="note__num">03</span><span data-i18n="level.base">Base</span></p>
+          <h3 class="note__name" data-i18n="note.3.name">Vanilla</h3>
+          <p class="note__text" data-i18n="note.3.text">Dark vanilla pods lay a smooth, sensual foundation.</p>
+        </article>
+        <article class="note" data-index="3">
+          <span class="note__node" aria-hidden="true"></span>
+          <figure class="note__media"><img class="note__img" src="/img/note-caramel.webp" alt="" decoding="async" /></figure>
+          <p class="note__level mono"><span class="note__num">04</span><span data-i18n="level.base">Base</span></p>
+          <h3 class="note__name" data-i18n="note.4.name">Salted Caramel</h3>
+          <p class="note__text" data-i18n="note.4.text">Molten caramel with a hint of salt — the legacy that lingers.</p>
+        </article>
       </div>
     </section>
 
@@ -241,7 +234,7 @@
             <li>TWINT</li><li>Visa</li><li>Mastercard</li><li>Apple Pay</li><li>Google Pay</li>
           </ul>
         </div>
-        <div class="delivery" role="group" data-i18n-aria="delivery.text" aria-label="Your order is delivered to you in 2 weeks.">
+        <div class="delivery" role="group" data-i18n-aria="delivery.text" aria-label="Your order is delivered to you in 10–16 days.">
           <p class="delivery__label mono">
             <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3.5 7.5 12 3l8.5 4.5v9L12 21l-8.5-4.5Z"/><path d="M3.5 7.5 12 12l8.5-4.5M12 12v9M7.8 5.2l8.5 4.6"/></svg>
             <span data-i18n="delivery.label">Delivery</span>
@@ -249,7 +242,7 @@
           <div class="delivery__track" aria-hidden="true">
             <i class="delivery__dot"></i>
             <span class="delivery__line"></span>
-            <b class="delivery__time" data-i18n="delivery.time">2 weeks</b>
+            <b class="delivery__time" data-i18n="delivery.time">10–16 days</b>
             <span class="delivery__line delivery__line--r"></span>
             <em class="delivery__pulse"></em>
             <i class="delivery__dot delivery__dot--end"></i>

@@ -228,26 +228,29 @@ export const finalShader = {
 };
 
 // ─────────────────────────────────────────────────────────────
-//  Notes gallery transition: noise dissolve with a molten-gold front,
-//  RGB split and scan-lines → "futuristic" reveal between photos
+//  Notes: every photo is revealed inside its arch by a noise dissolve
+//  with a molten-gold front, RGB split and scan-lines ("futuristic" reveal)
 // ─────────────────────────────────────────────────────────────
 export const notesVertex = /* glsl */ `
   varying vec2 vUv;
   void main() { vUv = uv; gl_Position = vec4(position.xy, 0.0, 1.0); }
 `;
 
+// one note photo inside its arch: revealed by the molten-gold front (uProgress 0 → 1),
+// hover ripple + zoom, dimmed while another note is hovered. Output is premultiplied alpha.
 export const notesFragment = /* glsl */ `
   precision highp float;
-  uniform sampler2D uFrom;
-  uniform sampler2D uTo;
-  uniform vec2 uFromRes;
-  uniform vec2 uToRes;
+  uniform sampler2D uTex;
+  uniform vec2 uTexRes;
   uniform vec2 uRes;
+  uniform float uRadius;
   uniform float uProgress;
   uniform float uTime;
   uniform float uVelocity;
   uniform vec2 uMouse;
   uniform float uHover;
+  uniform float uDim;
+  uniform float uSeed;
   varying vec2 vUv;
 
   vec2 cover(vec2 uv, vec2 img) {
@@ -273,7 +276,20 @@ export const notesFragment = /* glsl */ `
     return vec3(texture2D(t, uv + dir * amt).r, texture2D(t, uv).g, texture2D(t, uv - dir * amt).b);
   }
 
+  // signed distance (px) to the arch: half-circle top, straight sides, small rounded bottom corners
+  float archSd(vec2 p, vec2 s, float rb) {
+    float r = s.x * 0.5;
+    vec2 q = vec2(abs(p.x - r), p.y);
+    float cy = max(s.y - r, 0.0);
+    if (q.y > cy) return length(vec2(q.x, q.y - cy)) - r;
+    if (q.y < rb && q.x > r - rb) return length(vec2(q.x - (r - rb), q.y - rb)) - rb;
+    return max(q.x - r, -q.y);
+  }
+
   void main() {
+    float inside = 1.0 - smoothstep(-0.75, 0.75, archSd(vUv * uRes, uRes, uRadius));
+    if (inside <= 0.0) { gl_FragColor = vec4(0.0); return; }
+
     vec2 uv = vUv;
     float p = uProgress;
 
@@ -282,45 +298,39 @@ export const notesFragment = /* glsl */ `
     float md = length(m * vec2(uRes.x / uRes.y, 1.0));
     uv += normalize(m + 1e-5) * sin(md * 28.0 - uTime * 4.0) * 0.004 * uHover * smoothstep(0.35, 0.0, md);
 
-    float n = fbm(uv * vec2(2.2, 3.6) + vec2(0.0, uTime * 0.04));
-    float sweep = uv.y * 0.62 + n * 0.38;                        // new note rises from the bottom
+    float n = fbm(uv * vec2(2.2, 3.6) + vec2(uSeed, uTime * 0.04));
+    float sweep = uv.y * 0.62 + n * 0.38;                          // the photo rises from the bottom
     float edge = mix(-0.15, 1.15, p);
     float w = 0.07;
-    float mask = 1.0 - smoothstep(edge - w, edge + w, sweep);     // 1 → new photo
+    float mask = 1.0 - smoothstep(edge - w, edge + w, sweep);       // 1 → photo
     float band = exp(-pow((sweep - edge) / 0.045, 2.0)) * smoothstep(0.0, 0.04, p) * smoothstep(1.0, 0.96, p);
     float trans = sin(p * 3.14159);
 
-    vec2 dir = vec2(0.0, 1.0);
-    vec2 uvA = (cover(uv, uFromRes) - 0.5) * (1.0 - p * 0.12) + 0.5;
-    vec2 uvB = (cover(uv, uToRes) - 0.5) * (1.0 - (1.0 - p) * 0.12) + 0.5;
-    uvA += vec2((n - 0.5) * 0.06, 0.05) * band;
-    uvB -= vec2((n - 0.5) * 0.06, 0.05) * band;
-
-    float split = band * 0.012 + trans * 0.003 + abs(uVelocity) * 0.006;
-    vec3 a = sampleSplit(uFrom, uvA, dir, split);
-    vec3 b = sampleSplit(uTo, uvB, dir, split);
-    vec3 col = mix(a, b, mask);
+    vec2 st = (cover(uv, uTexRes) - 0.5) * (1.0 - (1.0 - p) * 0.12 - uHover * 0.045) + 0.5;
+    st -= vec2((n - 0.5) * 0.06, 0.05) * band;
+    float split = band * 0.012 + trans * 0.003 + abs(uVelocity) * 0.006 + uHover * 0.0015;
+    vec3 col = sampleSplit(uTex, st, vec2(0.0, 1.0), split);
 
     // molten gold front + scan-lines
     vec3 gold = vec3(1.0, 0.68, 0.32);
     float scan = 0.75 + 0.25 * sin(uv.y * uRes.y * 0.9);
     col = mix(col, col * 0.35 + gold * 1.05, band * 0.9 * scan);
     col += vec3(1.0, 0.86, 0.62) * pow(band, 8.0) * 0.55;
-    // faint scan grid riding the transition
-    col += gold * 0.06 * trans * step(0.92, fract(uv.y * uRes.y / 6.0)) * (1.0 - mask);
 
-    // dark burn just ahead of the front
-    float burn = smoothstep(edge + w * 3.5, edge + w, sweep) * (1.0 - mask);
-    col *= 1.0 - burn * 0.45 * trans;
-
-    // vignette inside the arch
+    // vignette inside the arch, dim while another note is hovered
     float vg = smoothstep(1.1, 0.35, length((vUv - vec2(0.5, 0.45)) * vec2(1.25, 1.0)));
     col *= mix(0.55, 1.0, vg);
+    col *= 1.0 - uDim * 0.5;
 
     // film grain
     col += (hash(vUv * uRes + fract(uTime) * 100.0) - 0.5) * 0.035;
 
-    gl_FragColor = vec4(col, 1.0);
+    // holographic scan grid running just ahead of the front
+    float ghost = step(0.9, fract(vUv.y * uRes.y / 6.0)) * trans * 0.22 * (1.0 - mask) * smoothstep(edge + 0.45, edge, sweep);
+
+    float a = clamp(max(mask, band), 0.0, 1.0);
+    vec3 outc = max(col, 0.0) * a + gold * ghost;
+    gl_FragColor = vec4(outc * inside, clamp(a + ghost, 0.0, 1.0) * inside);
   }
 `;
 

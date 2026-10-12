@@ -19,7 +19,7 @@ import Lenis from 'lenis';
 
 import { CONFIG, isPlaceholderEmail, formatPrice, formatVolume, hasCheckout, whatsappNumbers, whatsappLink } from './config.js';
 import { detectLang, setLang, setVars, getLang, t, onLangChange } from './i18n.js';
-import { $, $$, clamp, lerp, range, smooth, easeInOut, splitChars, loadImage, webglAvailable } from './utils.js';
+import { $, $$, clamp, lerp, easeInOut, splitChars, loadImage, webglAvailable } from './utils.js';
 import { Experience, POSE_KEYS } from './scene/Experience.js';
 import { NotesGallery } from './scene/NotesGallery.js';
 
@@ -257,11 +257,6 @@ function poseAt(scroll) {
 // ───────────────────────────────────────── text splitting
 const sloganA = splitChars($('.slogan__line--a'));
 const sloganB = splitChars($('.slogan__line--b'));
-let noteChars = [];
-function splitNotes() {
-  noteChars = $$('.note__name').map((el) => { delete el.dataset.splitSource; return splitChars(el); });
-}
-splitNotes();
 
 // ───────────────────────────────────────── scroll animations
 function buildScrollAnimations() {
@@ -323,20 +318,40 @@ function buildScrollAnimations() {
     onEnterBack: () => gsap.to(label, { duration: 0.8, scrambleText: { text: t('extrait.label'), chars: 'upperCase', speed: 0.6 } }),
   });
 
-  // NOTES — scroll-scrubbed shader slideshow
-  gsap.fromTo('.notes__frame', { clipPath: 'inset(100% 0% 0% 0% round 999px 999px 18px 18px)' }, {
-    clipPath: 'inset(0% 0% 0% 0% round 999px 999px 18px 18px)', ease: 'none',
-    scrollTrigger: { trigger: '#notes', start: 'top 85%', end: 'top top', scrub: true },
+  // NOTES — all four notes in one view: each photo is revealed in its arch by the gold front
+  // as the grid scrolls in (left → right: Top → Heart → Base), then its text rises in.
+  gsap.fromTo('.notes__head > *', { opacity: 0, y: 30 }, {
+    opacity: 1, y: 0, stagger: 0.06, ease: 'none',
+    scrollTrigger: { trigger: '#notes', start: 'top 85%', end: 'top 35%', scrub: true },
   });
-  gsap.fromTo('.notes__head > *, .pyramid li', { opacity: 0, y: 30 }, {
-    opacity: 1, y: 0, stagger: 0.05, ease: 'none',
-    scrollTrigger: { trigger: '#notes', start: 'top 60%', end: 'top 5%', scrub: true },
+  const rail = $('.notes__rail');
+  const noteCards = $$('.note');
+  const noteReveal = noteCards.map(() => 0);
+  noteCards.forEach((card, i) => {
+    const media = $('.note__media', card);
+    const col = () => (isMobile() ? i % 2 : i);
+    const state = { p: 0 };
+    const tl = gsap.timeline({
+      scrollTrigger: {
+        trigger: media, scrub: true, invalidateOnRefresh: true,
+        start: () => `top ${100 - col() * 6}%`,
+        end: () => `top ${54 - col() * 6}%`,
+      },
+    });
+    tl.to(state, {
+      p: 1, duration: 1, ease: 'none',
+      onUpdate: () => {
+        noteReveal[i] = state.p;
+        gallery?.setReveal(i, state.p);
+        card.classList.toggle('is-on', state.p > 0.55);
+        rail?.style.setProperty('--p', (noteReveal.reduce((a, b) => a + b, 0) / noteReveal.length).toFixed(3));
+      },
+    }, 0);
+    // without WebGL the plain photo wipes in instead
+    if (!gallery) tl.fromTo($('.note__img', card), { clipPath: 'inset(100% 0% 0% 0%)' }, { clipPath: 'inset(0% 0% 0% 0%)', duration: 0.85, ease: 'none' }, 0);
+    tl.fromTo($$('.note__level, .note__name, .note__text', card), { opacity: 0, y: 24, filter: 'blur(6px)' },
+      { opacity: 1, y: 0, filter: 'blur(0px)', stagger: 0.08, duration: 0.45, ease: 'power2.out' }, 0.38);
   });
-  ScrollTrigger.create({
-    trigger: '#notes', start: 'top top', end: 'bottom bottom',
-    onUpdate: (self) => updateNotes(self.progress),
-  });
-  updateNotes(0, true);
 
   // ORDER
   gsap.timeline({ scrollTrigger: { trigger: '.order', start: 'top 80%', end: 'top 15%', scrub: true } })
@@ -372,52 +387,6 @@ function buildScrollAnimations() {
         $$('.nav__links a').forEach((a) => a.classList.toggle('is-active', a.getAttribute('href') === `#${sec.id}`));
       },
     });
-  });
-}
-
-// ───────────────────────────────────────── notes logic
-let activeNote = -1;
-const notes = $$('.note');
-const levels = $$('.pyramid li');
-const NOTE_LEVEL = [0, 1, 2, 2];
-function updateNotes(progress, force = false) {
-  const n = NOTE_IMAGES.length;
-  const s = clamp((progress - 0.03) / 0.9);
-  const raw = s * (n - 1);
-  const i = Math.min(Math.floor(raw), n - 2);
-  const f = raw - i;
-  const tt = i + smooth(range(f, 0.18, 0.82));
-  gallery?.setProgress(tt);
-  $('.pyramid').style.setProperty('--p', (tt / (n - 1)).toFixed(3));
-  const idx = Math.round(tt);
-  if (idx !== activeNote || force) showNote(idx, activeNote, force);
-}
-
-function showNote(idx, prev, instant) {
-  activeNote = idx;
-  $('.notes__i').textContent = String(idx + 1).padStart(2, '0');
-  levels.forEach((li, k) => li.classList.toggle('is-active', k === NOTE_LEVEL[idx]));
-  if (!gallery) {
-    const fb = $('.notes__fallback');
-    if (fb) fb.src = NOTE_IMAGES[idx];
-  }
-  notes.forEach((note, k) => {
-    const chars = noteChars[k];
-    const extra = $$('.note__level, .note__text', note);
-    gsap.killTweensOf([...chars, ...extra]);
-    if (k === idx) {
-      note.classList.add('is-active');
-      gsap.fromTo(chars, { yPercent: 70, opacity: 0, filter: 'blur(8px)' }, { yPercent: 0, opacity: 1, filter: 'blur(0px)', duration: instant ? 0 : 0.9, stagger: instant ? 0 : 0.025, ease: 'power3.out', delay: instant ? 0 : 0.15 });
-      gsap.fromTo(extra, { y: 16, opacity: 0 }, { y: 0, opacity: 1, duration: instant ? 0 : 0.8, stagger: 0.08, ease: 'power3.out', delay: instant ? 0 : 0.25 });
-    } else {
-      note.classList.remove('is-active');
-      const dir = k < idx ? -1 : 1;
-      if (instant) gsap.set([...chars, ...extra], { opacity: 0 });
-      else {
-        gsap.to(chars, { yPercent: -60 * dir, opacity: 0, filter: 'blur(6px)', duration: 0.45, stagger: 0.012, ease: 'power2.in' });
-        gsap.to(extra, { opacity: 0, y: -10 * dir, duration: 0.35, ease: 'power2.in' });
-      }
-    }
   });
 }
 
@@ -465,7 +434,7 @@ const cRing = $('.cursor__ring');
 if (finePointer && !reduced) {
   document.documentElement.classList.add('has-cursor');
   document.addEventListener('pointerover', (e) => {
-    cursor.classList.toggle('is-hover', !!e.target.closest('a, button, input, textarea, .notes__frame'));
+    cursor.classList.toggle('is-hover', !!e.target.closest('a, button, input, textarea, .note__media'));
   });
   $$('.btn').forEach((b) => {
     b.addEventListener('pointermove', (e) => {
@@ -482,12 +451,30 @@ function updateCursor() {
   cRing.style.transform = `translate(${pointer.rx}px, ${pointer.ry}px) translate(-50%, -50%)`;
 }
 
+// ───────────────────────────────────────── notes: hover focus (desktop)
+function bindNoteHover() {
+  if (!finePointer) return;
+  const grid = $('.notes__grid');
+  $$('.note').forEach((card, i) => {
+    const media = $('.note__media', card);
+    const focus = (on) => {
+      card.classList.toggle('is-focus', on);
+      grid.classList.toggle('has-focus', on);
+      gallery?.setFocus(on ? i : -1);
+    };
+    card.addEventListener('pointerenter', () => focus(true));
+    card.addEventListener('pointerleave', () => focus(false));
+    media.addEventListener('pointermove', (e) => {
+      const r = media.getBoundingClientRect();
+      gallery?.setPointer(i, (e.clientX - r.left) / r.width, 1 - (e.clientY - r.top) / r.height);
+    });
+  });
+}
+
 // ───────────────────────────────────────── language switch
 $$('[data-lang]').forEach((b) => b.addEventListener('click', () => setLang(b.dataset.lang)));
 onLangChange(() => {
   applyLinks();
-  splitNotes();
-  showNote(Math.max(0, activeNote), -1, true);
   const msg = $('.form textarea');
   if (msg.dataset.prefilled === '1') msg.value = t('order.prefill');
   ScrollTrigger.refresh();
@@ -620,11 +607,13 @@ function intro() {
     console.warn('[londuve] preload issue', e);
   }
   if (exp && noteImgs.length === NOTE_IMAGES.length) {
-    try { gallery = new NotesGallery($('.notes__canvas'), noteImgs); } catch (e) { console.warn(e); }
+    try { gallery = new NotesGallery($('.notes__canvas'), noteImgs, $$('.note__media')); } catch (e) { console.warn(e); }
   }
-  if (!gallery) document.documentElement.classList.add('no-webgl-notes');
+  document.documentElement.classList.add(gallery ? 'has-notes-gl' : 'no-webgl-notes');
+  bindNoteHover();
   buildScrollAnimations();
   ScrollTrigger.addEventListener('refresh', buildKeys);
+  if (gallery) ScrollTrigger.addEventListener('refresh', () => gallery.measure());
   ScrollTrigger.refresh();
   buildKeys();
   intro();
