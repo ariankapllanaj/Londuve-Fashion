@@ -220,6 +220,24 @@
           <span class="price__label mono" data-i18n="order.price">Price</span>
           <span class="price__value"><small>CHF</small> 75.95</span>
         </div>
+        <div class="delivery" role="group" data-i18n-aria="delivery.text" aria-label="Your order is delivered to you in 2 weeks.">
+          <p class="delivery__label mono">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3.5 7.5 12 3l8.5 4.5v9L12 21l-8.5-4.5Z"/><path d="M3.5 7.5 12 12l8.5-4.5M12 12v9M7.8 5.2l8.5 4.6"/></svg>
+            <span data-i18n="delivery.label">Delivery</span>
+          </p>
+          <div class="delivery__track" aria-hidden="true">
+            <i class="delivery__dot"></i>
+            <span class="delivery__line"></span>
+            <b class="delivery__time" data-i18n="delivery.time">2 weeks</b>
+            <span class="delivery__line delivery__line--r"></span>
+            <em class="delivery__pulse"></em>
+            <i class="delivery__dot delivery__dot--end"></i>
+          </div>
+          <div class="delivery__ends mono" aria-hidden="true">
+            <span data-i18n="delivery.start">Order</span>
+            <span data-i18n="delivery.end">At your door</span>
+          </div>
+        </div>
         <div class="order__actions">
           <a class="btn btn--gold js-order" href="#contact"><span data-i18n="order.cta">Order now</span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12h15m-5-5 5 5-5 5"/></svg></a>
           <a class="btn btn--ghost js-wa-order" href="#" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4.5 19.5 5.7 16A8 8 0 1 1 8.6 18.6Z"/><path d="M9.2 8.6c.3 2.5 2.4 4.8 5.3 5.6l1-1.1 1.8.8-.4 1.6c-3.9.2-8.4-4-8.6-7.9l1.6-.4.8 1.8Z"/></svg><span data-i18n="order.wa">Order via WhatsApp</span></a>

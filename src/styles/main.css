@@ -316,6 +316,22 @@ main { position: relative; z-index: 2; }
 .price__label { color: var(--faint); font-size: 10px; }
 .price__value { font-family: var(--f-display); font-size: clamp(40px, 4vw, 60px); line-height: 1; color: var(--gold-hi); }
 .price__value small { font-family: var(--f-mono); font-size: 13px; letter-spacing: 0.2em; color: var(--gold); vertical-align: 0.9em; margin-right: 4px; }
+/* delivery timeline: Order ──── 2 weeks ──── At your door */
+.delivery { margin: -6px 0 30px; padding: 18px 0 16px; border-top: 1px solid var(--line-soft); border-bottom: 1px solid var(--line-soft); }
+.delivery__label { display: flex; align-items: center; gap: 10px; margin: 0 0 16px; color: var(--faint); font-size: 10px; }
+.delivery__label svg { width: 16px; height: 16px; fill: none; stroke: var(--gold); stroke-width: 1.2; stroke-linejoin: round; stroke-linecap: round; }
+.delivery__track { position: relative; display: flex; align-items: center; }
+.delivery__dot { flex: none; width: 9px; height: 9px; border-radius: 50%; border: 1px solid var(--gold); background: var(--black); }
+.delivery__dot--end { background: var(--gold-hi); border-color: var(--gold-hi); box-shadow: 0 0 0 4px rgba(241, 217, 168, 0.12), 0 0 16px var(--gold); }
+.delivery__line { flex: 1; height: 1px; margin-left: 10px; background: linear-gradient(90deg, rgba(201, 164, 106, 0.25), var(--gold)); }
+.delivery__line--r { margin: 0 10px 0 0; background: linear-gradient(90deg, var(--gold), rgba(201, 164, 106, 0.25)); }
+.delivery__time { flex: none; padding: 0 14px; font-family: var(--f-display); font-style: italic; font-weight: 400; font-size: clamp(22px, 2vw, 28px); line-height: 1; color: var(--gold-hi); white-space: nowrap; }
+.delivery__pulse { position: absolute; top: 50%; left: 10px; width: 5px; height: 5px; margin-top: -2.5px; border-radius: 50%; background: var(--gold-hi); box-shadow: 0 0 10px 2px var(--gold); opacity: 0; animation: deliver 4.5s cubic-bezier(0.45, 0, 0.25, 1) infinite; }
+@keyframes deliver {
+  0% { left: 10px; opacity: 0; } 8% { opacity: 1; } 36% { opacity: 1; } 42% { opacity: 0; }
+  58% { opacity: 0; } 64% { opacity: 1; } 92% { opacity: 1; } 100% { left: calc(100% - 15px); opacity: 0; }
+}
+.delivery__ends { display: flex; justify-content: space-between; margin-top: 12px; color: var(--muted); font-size: 10px; }
 .order__actions { display: flex; flex-wrap: wrap; gap: 12px; margin-bottom: 18px; }
 .order__note { margin: 0; font-size: 13px; color: var(--faint); }
 
@@ -424,5 +440,5 @@ main { position: relative; z-index: 2; }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .grain, .wordmark, .btn--gold, .order__name, .bignum__val::before, .bignum__pct::before, .scroll-cue i::after { animation: none !important; }
+  .grain, .wordmark, .btn--gold, .order__name, .bignum__val::before, .bignum__pct::before, .scroll-cue i::after, .delivery__pulse { animation: none !important; }
 }
