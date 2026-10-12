@@ -1,0 +1,274 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>LONDUVE — N°01 COURAGE · Extrait de Parfum</title>
+  <meta name="description" content="No label, just legacy. N°01 COURAGE — Extrait de Parfum with 42% oil concentration. 50 ml, CHF 75.95." />
+  <meta name="theme-color" content="#050404" />
+  <meta property="og:title" content="LONDUVE — N°01 COURAGE" />
+  <meta property="og:description" content="No label, just legacy. Extrait de Parfum · 42% oil concentration." />
+  <meta property="og:type" content="website" />
+  <meta property="og:image" content="/og-image.jpg" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <link rel="icon" type="image/png" href="/favicon.png" />
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+  <link rel="preload" href="/models/courage.glb" as="fetch" crossorigin />
+</head>
+<body class="is-loading">
+
+  <!-- ░░ LOADER ░░ -->
+  <div class="loader" aria-hidden="true">
+    <div class="loader__mark"><img src="/img/monogram.png" alt="" /></div>
+    <div class="loader__meta mono">
+      <span data-i18n="loader">Loading</span>
+      <span class="loader__count">000</span>
+    </div>
+    <div class="loader__bar"><i></i></div>
+  </div>
+
+  <!-- ░░ WEBGL STAGE ░░ -->
+  <canvas class="webgl" aria-hidden="true"></canvas>
+  <div class="grain" aria-hidden="true"></div>
+  <div class="vignette" aria-hidden="true"></div>
+
+  <!-- ░░ HUD ░░ -->
+  <div class="hud mono" aria-hidden="true">
+    <span class="hud__corner hud__corner--tl"></span><span class="hud__corner hud__corner--tr"></span>
+    <span class="hud__corner hud__corner--bl"></span><span class="hud__corner hud__corner--br"></span>
+    <div class="hud__section"><span class="hud__idx">00</span><span class="hud__name">LONDUVE</span></div>
+    <div class="hud__progress"><span class="hud__pct">000</span><i><b></b></i></div>
+  </div>
+
+  <div class="cursor" aria-hidden="true"><i class="cursor__dot"></i><i class="cursor__ring"></i></div>
+
+  <!-- ░░ NAV ░░ -->
+  <header class="nav">
+    <a class="nav__logo" href="#top" aria-label="LONDUVE — No label, just legacy">
+      <img src="/img/wordmark.png" alt="LONDUVE — No label, just legacy" width="1065" height="297" />
+    </a>
+    <nav class="nav__links mono" aria-label="Sections">
+      <a href="#courage" data-i18n="nav.courage">Courage</a>
+      <a href="#extrait" data-i18n="nav.extrait">Extrait</a>
+      <a href="#notes" data-i18n="nav.notes">Notes</a>
+      <a href="#contact" data-i18n="nav.contact">Contact</a>
+    </nav>
+    <div class="nav__right">
+      <div class="lang mono" role="group" aria-label="Language">
+        <button type="button" data-lang="en">EN</button>
+        <button type="button" data-lang="de">DE</button>
+        <button type="button" data-lang="fr">FR</button>
+      </div>
+      <a class="btn btn--ghost nav__order" href="#order"><span data-i18n="nav.order">Order</span></a>
+    </div>
+  </header>
+
+  <main id="top">
+
+    <!-- 01 · HERO — website slogan: NO LABEL, JUST LEGACY -->
+    <section class="hero" id="hero" data-section="01" data-name="NO LABEL">
+      <div class="hero__inner">
+        <p class="eyebrow mono hero__eyebrow"><span class="star"></span><span data-i18n="hero.eyebrow">Fragrance House</span><span class="star"></span></p>
+        <h1 class="hero__wordmark" aria-label="LONDUVE — No label, just legacy">
+          <span class="wordmark" role="img" aria-label="NO LABEL, LONDUVE — JUST LEGACY"></span>
+        </h1>
+        <p class="hero__claim mono"><span>N°01</span><i></i><span>COURAGE</span><i></i><span>50 ML</span></p>
+      </div>
+      <p class="hero__side hero__side--l mono" data-i18n="hero.side">Extrait de Parfum — 42% oil concentration</p>
+      <p class="hero__side hero__side--r mono">NO LABEL, JUST LEGACY</p>
+      <a class="scroll-cue mono" href="#emblem"><span data-i18n="hero.scroll">Scroll to discover</span><i></i></a>
+    </section>
+
+    <!-- 02 · EMBLEM — the perfume part starts with the Londuve Fragrance logo -->
+    <section class="emblem" id="emblem" data-section="02" data-name="LONDUVE FRAGRANCE">
+      <div class="sticky">
+        <div class="emblem__logo">
+          <div class="emblem__glow"></div>
+          <img src="/img/logo-emblem.png" alt="LONDUVE Fragrance" width="1040" height="952" />
+        </div>
+        <div class="emblem__caption">
+          <p class="eyebrow mono" data-i18n="emblem.kicker">Introducing</p>
+          <p class="emblem__title"><span>N°01</span> COURAGE</p>
+          <p class="emblem__line" data-i18n="emblem.line">Born without a label. Made to be remembered.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- 03 · COURAGE — 3D bottle + perfume slogan -->
+    <section class="courage" id="courage" data-section="03" data-name="COURAGE">
+      <div class="sticky">
+        <h2 class="slogan" aria-label="Wear courage, leave legacy">
+          <span class="slogan__line slogan__line--a" data-split>WEAR COURAGE,</span>
+          <span class="slogan__line slogan__line--b" data-split>LEAVE LEGACY.</span>
+        </h2>
+        <div class="courage__intro">
+          <p class="courage__kicker eyebrow mono" data-i18n="courage.kicker">The Fragrance</p>
+          <p class="courage__text" data-i18n="courage.text">An Extrait de Parfum for those who enter first — and are remembered long after they leave.</p>
+        </div>
+
+        <div class="callouts" aria-hidden="true">
+          <div class="callout callout--r" data-anchor="cap">
+            <i class="callout__dot"></i><i class="callout__line"></i>
+            <div class="callout__label"><b class="mono">N°01 — COURAGE</b><span data-i18n="call.1.sub">The first signature</span></div>
+          </div>
+          <div class="callout callout--l" data-anchor="body">
+            <i class="callout__dot"></i><i class="callout__line"></i>
+            <div class="callout__label"><b class="mono">EXTRAIT DE PARFUM</b><span data-i18n="call.2.sub">42% oil concentration</span></div>
+          </div>
+          <div class="callout callout--r" data-anchor="base">
+            <i class="callout__dot"></i><i class="callout__line"></i>
+            <div class="callout__label"><b class="mono">50 ML</b><span>CHF 75.95</span></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 04 · EXTRAIT — 42% oil concentration -->
+    <section class="extrait" id="extrait" data-section="04" data-name="EXTRAIT 42%">
+      <div class="sticky">
+        <div class="extrait__content">
+          <p class="eyebrow mono" data-i18n="extrait.kicker">Concentration</p>
+          <div class="bignum" aria-label="42%">
+            <span class="bignum__val" data-text="42">00</span><span class="bignum__pct" data-text="%">%</span>
+          </div>
+          <p class="extrait__label mono" data-scramble data-i18n="extrait.label">Oil Concentration</p>
+          <p class="extrait__type">Extrait de Parfum</p>
+          <p class="extrait__text" data-i18n="extrait.text">Extrait de Parfum is the purest, most concentrated form of perfume. COURAGE goes beyond it — 42% oil concentration for a richer, deeper trail.</p>
+
+          <div class="scale" aria-label="Typical concentrations">
+            <p class="scale__title mono" data-i18n="extrait.scale">Typical concentrations</p>
+            <div class="scale__track">
+              <div class="scale__row" style="--a:2;--b:4"><span class="mono" data-i18n="scale.edc">Eau de Cologne</span><em class="mono">2–4%</em><i></i></div>
+              <div class="scale__row" style="--a:5;--b:15"><span class="mono" data-i18n="scale.edt">Eau de Toilette</span><em class="mono">5–15%</em><i></i></div>
+              <div class="scale__row" style="--a:15;--b:20"><span class="mono" data-i18n="scale.edp">Eau de Parfum</span><em class="mono">15–20%</em><i></i></div>
+              <div class="scale__row" style="--a:20;--b:40"><span class="mono" data-i18n="scale.ext">Extrait de Parfum</span><em class="mono">20–40%</em><i></i></div>
+              <div class="scale__marker" style="--v:42"><b class="mono">COURAGE 42%</b></div>
+              <div class="scale__axis mono"><span>0</span><span>10</span><span>20</span><span>30</span><span>40</span><span>50%</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 05 · NOTES — aroma notes after the perfume -->
+    <section class="notes" id="notes" data-section="05" data-name="NOTES">
+      <div class="sticky">
+        <header class="notes__head">
+          <p class="eyebrow mono" data-i18n="notes.kicker">The Composition</p>
+          <h2 class="notes__title" data-i18n="notes.title">Olfactory Notes</h2>
+        </header>
+
+        <ol class="pyramid mono" aria-label="Fragrance pyramid">
+          <li data-level="0"><i></i><span data-i18n="level.top">Top</span></li>
+          <li data-level="1"><i></i><span data-i18n="level.heart">Heart</span></li>
+          <li data-level="2"><i></i><span data-i18n="level.base">Base</span></li>
+          <b class="pyramid__fill"></b>
+        </ol>
+
+        <figure class="notes__frame">
+          <canvas class="notes__canvas" aria-hidden="true"></canvas>
+          <img class="notes__fallback" src="/img/note-nutmeg.webp" alt="" />
+          <span class="frame-corner frame-corner--tl"></span><span class="frame-corner frame-corner--tr"></span>
+          <span class="frame-corner frame-corner--bl"></span><span class="frame-corner frame-corner--br"></span>
+          <figcaption class="notes__counter mono"><span class="notes__i">01</span> / 04</figcaption>
+        </figure>
+
+        <div class="notes__list">
+          <article class="note is-active" data-index="0">
+            <p class="note__level mono"><span class="note__num">01</span><span data-i18n="level.top">Top</span></p>
+            <h3 class="note__name" data-i18n="note.1.name">Nutmeg</h3>
+            <p class="note__text" data-i18n="note.1.text">Warm, bright spice opens the trail — the first spark of courage.</p>
+          </article>
+          <article class="note" data-index="1">
+            <p class="note__level mono"><span class="note__num">02</span><span data-i18n="level.heart">Heart</span></p>
+            <h3 class="note__name" data-i18n="note.2.name">Rose · Lily · Jasmine</h3>
+            <p class="note__text" data-i18n="note.2.text">A dew-kissed floral heart of rose, lily and jasmine. Soft, yet assured.</p>
+          </article>
+          <article class="note" data-index="2">
+            <p class="note__level mono"><span class="note__num">03</span><span data-i18n="level.base">Base</span></p>
+            <h3 class="note__name" data-i18n="note.3.name">Vanilla</h3>
+            <p class="note__text" data-i18n="note.3.text">Dark vanilla pods lay a smooth, sensual foundation.</p>
+          </article>
+          <article class="note" data-index="3">
+            <p class="note__level mono"><span class="note__num">04</span><span data-i18n="level.base">Base</span></p>
+            <h3 class="note__name" data-i18n="note.4.name">Salted Caramel</h3>
+            <p class="note__text" data-i18n="note.4.text">Molten caramel with a hint of salt — the legacy that lingers.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- 06 · ORDER -->
+    <section class="order" id="order" data-section="06" data-name="ORDER">
+      <div class="order__media">
+        <div class="order__arch">
+          <img src="/img/campaign.webp" alt="N°01 COURAGE — Extrait de Parfum bottle on a black marble pedestal" width="1206" height="1900" loading="lazy" />
+        </div>
+        <span class="order__ring"></span>
+      </div>
+      <div class="order__info">
+        <p class="eyebrow mono"><span>N°01</span> — <span data-i18n="order.kicker">The Bottle</span></p>
+        <h2 class="order__name">COURAGE</h2>
+        <p class="order__type" data-i18n="order.type">Extrait de Parfum</p>
+        <p class="order__slogan mono">WEAR COURAGE, LEAVE LEGACY</p>
+        <dl class="specs">
+          <div><dt class="mono" data-i18n="spec.conc">Concentration</dt><dd data-i18n="spec.conc.v">42% oil</dd></div>
+          <div><dt class="mono" data-i18n="spec.vol">Volume</dt><dd>50 ml</dd></div>
+          <div><dt class="mono" data-i18n="spec.notes">Notes</dt><dd data-i18n="spec.notes.v">Nutmeg, Rose, Lily, Jasmine, Vanilla, Salted Caramel</dd></div>
+        </dl>
+        <div class="price">
+          <span class="price__label mono" data-i18n="order.price">Price</span>
+          <span class="price__value"><small>CHF</small> 75.95</span>
+        </div>
+        <div class="order__actions">
+          <a class="btn btn--gold js-order" href="#contact"><span data-i18n="order.cta">Order now</span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12h15m-5-5 5 5-5 5"/></svg></a>
+          <a class="btn btn--ghost js-wa-order" href="#" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4.5 19.5 5.7 16A8 8 0 1 1 8.6 18.6Z"/><path d="M9.2 8.6c.3 2.5 2.4 4.8 5.3 5.6l1-1.1 1.8.8-.4 1.6c-3.9.2-8.4-4-8.6-7.9l1.6-.4.8 1.8Z"/></svg><span data-i18n="order.wa">Order via WhatsApp</span></a>
+        </div>
+        <p class="order__note" data-i18n="order.note">Every order is confirmed personally by message.</p>
+      </div>
+    </section>
+
+    <!-- 07 · CONTACT -->
+    <section class="contact" id="contact" data-section="07" data-name="CONTACT">
+      <div class="contact__head">
+        <p class="eyebrow mono" data-i18n="contact.kicker">Contact</p>
+        <h2 class="contact__title" data-i18n="contact.title">Write to us.</h2>
+        <p class="contact__text" data-i18n="contact.text">Questions, orders or collaborations — we reply personally.</p>
+
+        <p class="contact__channels-title mono" data-i18n="contact.channels">Or reach us directly</p>
+        <ul class="channels">
+          <li><a class="channel js-wa" href="#" target="_blank" rel="noopener">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4.5 19.5 5.7 16A8 8 0 1 1 8.6 18.6Z"/><path d="M9.2 8.6c.3 2.5 2.4 4.8 5.3 5.6l1-1.1 1.8.8-.4 1.6c-3.9.2-8.4-4-8.6-7.9l1.6-.4.8 1.8Z"/></svg>
+            <span class="mono">WhatsApp</span><em class="js-wa-label"></em></a></li>
+          <li><a class="channel js-ig" href="#" target="_blank" rel="noopener">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3.5" y="3.5" width="17" height="17" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.2" cy="6.8" r=".6"/></svg>
+            <span class="mono">Instagram</span><em class="js-ig-label"></em></a></li>
+          <li><a class="channel js-mail" href="#">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="5.5" width="18" height="13" rx="1.5"/><path d="m3.5 6.5 8.5 6.5 8.5-6.5"/></svg>
+            <span class="mono">Email</span><em class="js-mail-label"></em></a></li>
+        </ul>
+      </div>
+
+      <form class="form" novalidate>
+        <input type="text" name="_honey" class="form__hp" tabindex="-1" autocomplete="off" aria-hidden="true" />
+        <label class="field"><span class="mono" data-i18n="form.name">Name</span><input type="text" name="name" required autocomplete="name" /></label>
+        <label class="field"><span class="mono" data-i18n="form.email">Email</span><input type="email" name="email" required autocomplete="email" /></label>
+        <label class="field field--area"><span class="mono" data-i18n="form.message">Message</span><textarea name="message" rows="5" required></textarea></label>
+        <button class="btn btn--gold form__submit" type="submit"><span data-i18n="form.send">Send message</span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12h15m-5-5 5 5-5 5"/></svg></button>
+        <p class="form__status" role="status" aria-live="polite"></p>
+      </form>
+    </section>
+
+    <footer class="footer">
+      <div class="footer__mark"><span class="wordmark wordmark--static" role="img" aria-label="NO LABEL, LONDUVE — JUST LEGACY"></span></div>
+      <div class="footer__row mono">
+        <span>© <span class="js-year">2026</span> LONDUVE FRAGRANCE — <span data-i18n="footer.rights">All rights reserved.</span></span>
+        <span>WEAR COURAGE, LEAVE LEGACY</span>
+        <a href="#top" data-i18n="footer.top">Back to top</a>
+      </div>
+    </footer>
+  </main>
+
+  <script type="module" src="/src/main.js"></script>
+</body>
+</html>

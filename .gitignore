@@ -1,0 +1,10 @@
+# dependencies & build output (GitHub Actions rebuilds dist/ on every push)
+node_modules
+dist
+
+# system / logs
+.DS_Store
+*.log
+
+# preview images saved by Claude — not part of the site
+Claude outputs/

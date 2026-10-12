@@ -1,0 +1,55 @@
+name: Deploy to GitHub Pages
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch: # allows a manual "Run workflow" from the Actions tab
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# one deployment at a time; never cancel one that is already running
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Node 20
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Read Pages settings
+        id: pages
+        uses: actions/configure-pages@v5
+
+      - name: Install and build
+        run: npm ci && npm run build
+        env:
+          # "/<repo-name>/" for https://<username>.github.io/<repo-name>/ (read by vite.config.js)
+          BASE_PATH: ${{ steps.pages.outputs.base_path }}/
+
+      - name: Upload dist
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: dist
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy
+        id: deployment
+        uses: actions/deploy-pages@v4
