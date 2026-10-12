@@ -4,7 +4,7 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
   <title>LONDUVE — N°01 COURAGE · Extrait de Parfum</title>
-  <meta name="description" content="No label, just legacy. N°01 COURAGE — Extrait de Parfum with 42% oil concentration. 50 ml, CHF 75.95." />
+  <meta name="description" content="No label, just legacy. N°01 COURAGE — Extrait de Parfum with 42% oil concentration. 50 ml, CHF 79.95." />
   <meta name="theme-color" content="#050404" />
   <meta property="og:title" content="LONDUVE — N°01 COURAGE" />
   <meta property="og:description" content="No label, just legacy. Extrait de Parfum · 42% oil concentration." />
@@ -40,6 +40,17 @@
     <div class="hud__progress"><span class="hud__pct">000</span><i><b></b></i></div>
   </div>
 
+  <div class="thanks" id="thanks" role="status" aria-live="polite" hidden>
+    <span class="thanks__star" aria-hidden="true"></span>
+    <div class="thanks__body">
+      <p class="thanks__title" data-i18n="thanks.title">Thank you.</p>
+      <p class="thanks__text" data-i18n="thanks.text">Your order is confirmed. Delivery takes about 2 weeks.</p>
+    </div>
+    <button type="button" class="thanks__close" data-i18n-aria="thanks.close" aria-label="Close">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m6 6 12 12M18 6 6 18"/></svg>
+    </button>
+  </div>
+
   <div class="cursor" aria-hidden="true"><i class="cursor__dot"></i><i class="cursor__ring"></i></div>
 
   <!-- ░░ NAV ░░ -->
@@ -72,7 +83,7 @@
         <h1 class="hero__wordmark" aria-label="LONDUVE — No label, just legacy">
           <span class="wordmark" role="img" aria-label="NO LABEL, LONDUVE — JUST LEGACY"></span>
         </h1>
-        <p class="hero__claim mono"><span>N°01</span><i></i><span>COURAGE</span><i></i><span>50 ML</span></p>
+        <p class="hero__claim mono"><span>N°01</span><i></i><span>COURAGE</span><i></i><span class="js-volume">50 ml</span></p>
       </div>
       <p class="hero__side hero__side--l mono" data-i18n="hero.side">Extrait de Parfum — 42% oil concentration</p>
       <p class="hero__side hero__side--r mono">NO LABEL, JUST LEGACY</p>
@@ -117,7 +128,7 @@
           </div>
           <div class="callout callout--r" data-anchor="base">
             <i class="callout__dot"></i><i class="callout__line"></i>
-            <div class="callout__label"><b class="mono">50 ML</b><span>CHF 75.95</span></div>
+            <div class="callout__label"><b class="mono js-volume">50 ml</b><span class="js-price">CHF 79.95</span></div>
           </div>
         </div>
       </div>
@@ -176,8 +187,8 @@
         <div class="notes__list">
           <article class="note is-active" data-index="0">
             <p class="note__level mono"><span class="note__num">01</span><span data-i18n="level.top">Top</span></p>
-            <h3 class="note__name" data-i18n="note.1.name">Nutmeg</h3>
-            <p class="note__text" data-i18n="note.1.text">Warm, bright spice opens the trail — the first spark of courage.</p>
+            <h3 class="note__name" data-i18n="note.1.name">White Musk</h3>
+            <p class="note__text" data-i18n="note.1.text">Soft, clean white musk opens the trail — the first spark of courage.</p>
           </article>
           <article class="note" data-index="1">
             <p class="note__level mono"><span class="note__num">02</span><span data-i18n="level.heart">Heart</span></p>
@@ -199,7 +210,7 @@
     </section>
 
     <!-- 06 · ORDER -->
-    <section class="order" id="order" data-section="06" data-name="ORDER">
+    <section class="order" id="order" data-section="06" data-name="ORDER" data-checkout="off">
       <div class="order__media">
         <div class="order__arch">
           <img src="/img/campaign.webp" alt="N°01 COURAGE — Extrait de Parfum bottle on a black marble pedestal" width="1206" height="1900" loading="lazy" />
@@ -213,12 +224,22 @@
         <p class="order__slogan mono">WEAR COURAGE, LEAVE LEGACY</p>
         <dl class="specs">
           <div><dt class="mono" data-i18n="spec.conc">Concentration</dt><dd data-i18n="spec.conc.v">42% oil</dd></div>
-          <div><dt class="mono" data-i18n="spec.vol">Volume</dt><dd>50 ml</dd></div>
-          <div><dt class="mono" data-i18n="spec.notes">Notes</dt><dd data-i18n="spec.notes.v">Nutmeg, Rose, Lily, Jasmine, Vanilla, Salted Caramel</dd></div>
+          <div><dt class="mono" data-i18n="spec.vol">Volume</dt><dd class="js-volume">50 ml</dd></div>
+          <div><dt class="mono" data-i18n="spec.notes">Notes</dt><dd data-i18n="spec.notes.v">White Musk, Rose, Lily, Jasmine, Vanilla, Salted Caramel</dd></div>
         </dl>
         <div class="price">
           <span class="price__label mono" data-i18n="order.price">Price</span>
-          <span class="price__value"><small>CHF</small> 75.95</span>
+          <span class="price__value"><small class="js-price-currency">CHF</small> <span class="js-price-amount">79.95</span></span>
+        </div>
+        <div class="paymethods">
+          <span class="paymethods__label mono" data-i18n="pay.label">Pay with</span>
+          <!-- Rendered from CONFIG.paymentMethods in src/config.js.
+               TWINT LOGO PLACEHOLDER: the official TWINT logo must be supplied by the client and used
+               according to TWINT's brand guidelines — put the file in public/img/payment/ and set its path
+               as `logo` in CONFIG.paymentMethods. Never redraw it. Until then the name is shown as text. -->
+          <ul class="paymethods__list mono" data-i18n-aria="pay.listAria" aria-label="Accepted payment methods">
+            <li>TWINT</li><li>Visa</li><li>Mastercard</li><li>Apple Pay</li><li>Google Pay</li>
+          </ul>
         </div>
         <div class="delivery" role="group" data-i18n-aria="delivery.text" aria-label="Your order is delivered to you in 2 weeks.">
           <p class="delivery__label mono">
@@ -242,7 +263,11 @@
           <a class="btn btn--gold js-order" href="#contact"><span data-i18n="order.cta">Order now</span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12h15m-5-5 5 5-5 5"/></svg></a>
           <a class="btn btn--ghost js-wa-order" href="#" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4.5 19.5 5.7 16A8 8 0 1 1 8.6 18.6Z"/><path d="M9.2 8.6c.3 2.5 2.4 4.8 5.3 5.6l1-1.1 1.8.8-.4 1.6c-3.9.2-8.4-4-8.6-7.9l1.6-.4.8 1.8Z"/></svg><span data-i18n="order.wa">Order via WhatsApp</span></a>
         </div>
-        <p class="order__note" data-i18n="order.note">Every order is confirmed personally by message.</p>
+        <p class="order__note order__note--contact" data-i18n="order.note">Every order is confirmed personally by message.</p>
+        <p class="order__note order__note--pay" id="pay-note">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="10.5" width="14" height="10" rx="2"/><path d="M8.5 10.5V7.8a3.5 3.5 0 0 1 7 0v2.7"/></svg>
+          <span data-i18n="pay.note">Secure payment with TWINT or card, completed on our payment partner’s checkout.</span>
+        </p>
       </div>
     </section>
 
@@ -255,7 +280,8 @@
 
         <p class="contact__channels-title mono" data-i18n="contact.channels">Or reach us directly</p>
         <ul class="channels">
-          <li><a class="channel js-wa" href="#" target="_blank" rel="noopener">
+          <!-- one WhatsApp row per number in CONFIG.whatsapp (src/config.js) -->
+          <li class="js-wa-row"><a class="channel js-wa" href="#" target="_blank" rel="noopener">
             <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4.5 19.5 5.7 16A8 8 0 1 1 8.6 18.6Z"/><path d="M9.2 8.6c.3 2.5 2.4 4.8 5.3 5.6l1-1.1 1.8.8-.4 1.6c-3.9.2-8.4-4-8.6-7.9l1.6-.4.8 1.8Z"/></svg>
             <span class="mono">WhatsApp</span><em class="js-wa-label"></em></a></li>
           <li><a class="channel js-ig" href="#" target="_blank" rel="noopener">
@@ -279,9 +305,16 @@
 
     <footer class="footer">
       <div class="footer__mark"><span class="wordmark wordmark--static" role="img" aria-label="NO LABEL, LONDUVE — JUST LEGACY"></span></div>
+      <nav class="footer__legal mono" data-i18n-aria="legal.aria" aria-label="Legal information">
+        <a class="js-legal" data-legal="imprint" href="legal.html#imprint" data-i18n="legal.imprint">Imprint</a>
+        <a class="js-legal" data-legal="terms" href="legal.html#terms" data-i18n="legal.terms">Terms</a>
+        <a class="js-legal" data-legal="privacy" href="legal.html#privacy" data-i18n="legal.privacy">Privacy</a>
+        <a class="js-legal" data-legal="shipping" href="legal.html#shipping" data-i18n="legal.shipping">Shipping &amp; Returns</a>
+      </nav>
       <div class="footer__row mono">
         <span>© <span class="js-year">2026</span> LONDUVE FRAGRANCE — <span data-i18n="footer.rights">All rights reserved.</span></span>
         <span>WEAR COURAGE, LEAVE LEGACY</span>
+        <span class="footer__credit"><span data-i18n="footer.dev">Developed by</span> <a href="https://ariankapllanaj.github.io/personal-website/" target="_blank" rel="noopener">Arian Kapllanaj</a></span>
         <a href="#top" data-i18n="footer.top">Back to top</a>
       </div>
     </footer>

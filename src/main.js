@@ -17,8 +17,8 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { ScrambleTextPlugin } from 'gsap/ScrambleTextPlugin';
 import Lenis from 'lenis';
 
-import { CONFIG, isPlaceholderEmail } from './config.js';
-import { detectLang, setLang, t, onLangChange } from './i18n.js';
+import { CONFIG, isPlaceholderEmail, formatPrice, formatVolume, hasCheckout, whatsappNumbers, whatsappLink } from './config.js';
+import { detectLang, setLang, setVars, getLang, t, onLangChange } from './i18n.js';
 import { $, $$, clamp, lerp, range, smooth, easeInOut, splitChars, loadImage, webglAvailable } from './utils.js';
 import { Experience, POSE_KEYS } from './scene/Experience.js';
 import { NotesGallery } from './scene/NotesGallery.js';
@@ -35,19 +35,107 @@ const NOTE_IMAGES = ['note-nutmeg.webp', 'note-florals.webp', 'note-vanilla.webp
 if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
 window.scrollTo(0, 0);
 
+// price / volume come from CONFIG.product (one source of truth), also inside translated strings
+setVars({ price: formatPrice(), volume: formatVolume() });
 setLang(detectLang(), { silent: true });
 $('.js-year').textContent = String(new Date().getFullYear());
 
+// ───────────────────────────────────────── returning from the checkout (?paid=1)
+const pageParams = new URLSearchParams(location.search);
+const justPaid = pageParams.get(CONFIG.paidParam) === '1';
+if (justPaid) {
+  // clean the address bar so a refresh or a shared link doesn't show the banner again
+  pageParams.delete(CONFIG.paidParam);
+  pageParams.delete('session_id');
+  const qs = pageParams.toString();
+  history.replaceState(null, '', location.pathname + (qs ? `?${qs}` : '') + location.hash);
+}
+
+// ───────────────────────────────────────── product values from config
+function applyProduct() {
+  const p = CONFIG.product;
+  $$('.js-price').forEach((el) => { el.textContent = formatPrice(); });
+  $$('.js-price-currency').forEach((el) => { el.textContent = p.currency; });
+  $$('.js-price-amount').forEach((el) => { el.textContent = p.price.toFixed(2); });
+  $$('.js-volume').forEach((el) => { el.textContent = formatVolume(); });
+  const list = $('.paymethods__list');
+  if (list) {
+    list.textContent = '';
+    CONFIG.paymentMethods.forEach((m) => {
+      const li = document.createElement('li');
+      if (m.logo) {
+        // official brand asset supplied by the client (see CONFIG.paymentMethods)
+        const img = new Image();
+        img.src = `${BASE}${m.logo.replace(/^\//, '')}`;
+        img.alt = m.name;
+        img.decoding = 'async';
+        li.appendChild(img);
+      } else {
+        li.textContent = m.name;
+      }
+      list.appendChild(li);
+    });
+  }
+}
+applyProduct();
+
+/** Checkout link with the visitor's language, or '' while CONFIG.checkoutUrl isn't set. */
+function checkoutHref() {
+  if (!hasCheckout()) return '';
+  try {
+    const u = new URL(CONFIG.checkoutUrl.trim());
+    if (CONFIG.checkoutLocaleParam) u.searchParams.set(CONFIG.checkoutLocaleParam, getLang());
+    return u.toString();
+  } catch (e) {
+    console.warn('[londuve] CONFIG.checkoutUrl is not a valid URL');
+    return '';
+  }
+}
+
 // ───────────────────────────────────────── contact links from config
 function applyLinks() {
-  const wa = `https://wa.me/${CONFIG.whatsapp}`;
-  $$('.js-wa').forEach((a) => { a.href = wa; });
-  $('.js-wa-order').href = `${wa}?text=${encodeURIComponent(t('order.prefill'))}`;
-  $('.js-wa-label').textContent = `+${CONFIG.whatsapp}`;
+  // WhatsApp: "Order via WhatsApp" → first number with the order message; contact list → one row per number
+  const waNums = whatsappNumbers();
+  const waOrder = $('.js-wa-order');
+  waOrder.hidden = !waNums.length;
+  if (waNums.length) waOrder.href = whatsappLink(waNums[0], t('order.prefill'));
+  const waRow = $('.js-wa-row');
+  $$('.js-wa-row-extra').forEach((li) => li.remove());
+  waRow.hidden = !waNums.length;
+  let prev = waRow;
+  waNums.forEach((num, i) => {
+    const li = i === 0 ? waRow : waRow.cloneNode(true);
+    if (i > 0) { li.classList.add('js-wa-row-extra'); prev.after(li); prev = li; }
+    const a = $('.js-wa', li);
+    a.href = whatsappLink(num);
+    a.setAttribute('aria-label', `WhatsApp ${num}`);
+    $('.js-wa-label', li).textContent = num;
+  });
   $('.js-ig').href = `https://instagram.com/${CONFIG.instagram}`;
   $('.js-ig-label').textContent = `@${CONFIG.instagram}`;
   $('.js-mail').href = `mailto:${CONFIG.email}`;
   $('.js-mail-label').textContent = CONFIG.email;
+
+  // "Order now": hosted checkout when configured, otherwise the contact form (pre-filled order message)
+  const pay = checkoutHref();
+  $('.order').dataset.checkout = pay ? 'on' : 'off';
+  $$('.js-order').forEach((a) => {
+    if (pay) {
+      a.href = pay;
+      a.dataset.mode = 'checkout';
+      a.setAttribute('aria-describedby', 'pay-note');
+    } else {
+      a.href = '#contact';
+      a.dataset.mode = 'contact';
+      a.removeAttribute('aria-describedby');
+    }
+  });
+
+  // legal pages: client's URLs from config, otherwise the placeholder page
+  $$('.js-legal').forEach((a) => {
+    const key = a.dataset.legal;
+    a.href = (CONFIG.legal && CONFIG.legal[key]) || `${BASE}legal.html#${key}`;
+  });
 }
 applyLinks();
 
@@ -114,8 +202,8 @@ const scrollTo = (target, opts = {}) => {
 };
 $$('a[href^="#"]').forEach((a) => {
   a.addEventListener('click', (e) => {
-    const id = a.getAttribute('href');
-    if (id.length < 2) return;
+    const id = a.getAttribute('href') || '';
+    if (!id.startsWith('#') || id.length < 2) return; // external links (e.g. the checkout) navigate normally
     e.preventDefault();
     scrollTo(id === '#top' ? 0 : id);
   });
@@ -407,6 +495,7 @@ onLangChange(() => {
 
 // ───────────────────────────────────────── order → contact form
 $$('.js-order').forEach((a) => a.addEventListener('click', () => {
+  if (a.dataset.mode === 'checkout') return; // the link itself opens the hosted checkout
   const msg = $('.form textarea');
   if (!msg.value.trim() || msg.dataset.prefilled === '1') {
     msg.value = t('order.prefill');
@@ -415,6 +504,23 @@ $$('.js-order').forEach((a) => a.addEventListener('click', () => {
   setTimeout(() => $('.form input[name="name"]').focus({ preventScroll: true }), 1800);
 }));
 $('.form textarea').addEventListener('input', (e) => { e.target.dataset.prefilled = '0'; });
+
+// ───────────────────────────────────────── thank-you banner after payment
+const thanks = $('#thanks');
+function showThanks() {
+  thanks.hidden = false;
+  // re-set the text so screen readers announce the live region
+  $$('[data-i18n]', thanks).forEach((el) => { el.textContent = t(el.dataset.i18n); });
+  if (!reduced) gsap.fromTo(thanks, { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: 1, ease: 'expo.out' });
+}
+function hideThanks() {
+  if (thanks.hidden) return;
+  const done = () => { thanks.hidden = true; gsap.set(thanks, { clearProps: 'opacity,transform' }); };
+  if (reduced) done();
+  else gsap.to(thanks, { opacity: 0, y: 20, duration: 0.4, ease: 'power2.in', onComplete: done });
+}
+$('.thanks__close').addEventListener('click', hideThanks);
+document.addEventListener('keydown', (e) => { if (e.key === 'Escape') hideThanks(); });
 
 // ───────────────────────────────────────── contact form
 const form = $('.form');
@@ -522,6 +628,7 @@ function intro() {
   ScrollTrigger.refresh();
   buildKeys();
   intro();
+  if (justPaid) gsap.delayedCall(reduced ? 0.4 : 2.6, showThanks);
 })();
 
 let resizeTimer;
@@ -538,4 +645,4 @@ window.addEventListener('resize', () => {
 });
 
 // debug helpers for QA (harmless in production)
-window.__londuve = { scrollTo, get exp() { return exp; }, get lenis() { return lenis; }, get gallery() { return gallery; } };
+window.__londuve = { scrollTo, get exp() { return exp; }, get lenis() { return lenis; }, get gallery() { return gallery; }, showThanks };

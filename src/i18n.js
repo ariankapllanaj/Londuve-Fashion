@@ -5,7 +5,7 @@ export const LANGS = ['en', 'de', 'fr'];
 export const DICT = {
   en: {
     'meta.title': 'LONDUVE — N°01 COURAGE · Extrait de Parfum',
-    'meta.desc': 'No label, just legacy. N°01 COURAGE — Extrait de Parfum with 42% oil concentration. 50 ml, CHF 75.95.',
+    'meta.desc': 'No label, just legacy. N°01 COURAGE — Extrait de Parfum with 42% oil concentration. {volume}, {price}.',
     'loader': 'Loading',
     'nav.courage': 'Courage',
     'nav.extrait': 'Extrait',
@@ -35,8 +35,8 @@ export const DICT = {
     'level.top': 'Top',
     'level.heart': 'Heart',
     'level.base': 'Base',
-    'note.1.name': 'Nutmeg',
-    'note.1.text': 'Warm, bright spice opens the trail — the first spark of courage.',
+    'note.1.name': 'White Musk',
+    'note.1.text': 'Soft, clean white musk opens the trail — the first spark of courage.',
     'note.2.name': 'Rose · Lily · Jasmine',
     'note.2.text': 'A dew-kissed floral heart of rose, lily and jasmine. Soft, yet assured.',
     'note.3.name': 'Vanilla',
@@ -49,7 +49,7 @@ export const DICT = {
     'spec.conc.v': '42% oil',
     'spec.vol': 'Volume',
     'spec.notes': 'Notes',
-    'spec.notes.v': 'Nutmeg, Rose, Lily, Jasmine, Vanilla, Salted Caramel',
+    'spec.notes.v': 'White Musk, Rose, Lily, Jasmine, Vanilla, Salted Caramel',
     'order.price': 'Price',
     'order.cta': 'Order now',
     'order.wa': 'Order via WhatsApp',
@@ -59,7 +59,13 @@ export const DICT = {
     'delivery.start': 'Order',
     'delivery.end': 'At your door',
     'delivery.text': 'Your order is delivered to you in 2 weeks.',
-    'order.prefill': 'Hello Londuve, I would like to order N°01 COURAGE — Extrait de Parfum, 50 ml (CHF 75.95).',
+    'pay.label': 'Pay with',
+    'pay.listAria': 'Accepted payment methods',
+    'pay.note': 'Secure payment with TWINT or card, completed on our payment partner’s checkout.',
+    'thanks.title': 'Thank you.',
+    'thanks.text': 'Your order is confirmed. Delivery takes about 2 weeks.',
+    'thanks.close': 'Close',
+    'order.prefill': 'Hello Londuve, I would like to order N°01 COURAGE — Extrait de Parfum, {volume} ({price}).',
     'contact.kicker': 'Contact',
     'contact.title': 'Write to us.',
     'contact.text': 'Questions, orders or collaborations — we reply personally.',
@@ -74,12 +80,18 @@ export const DICT = {
     'contact.channels': 'Or reach us directly',
     'footer.rights': 'All rights reserved.',
     'footer.top': 'Back to top',
+    'footer.dev': 'Developed by',
+    'legal.aria': 'Legal information',
+    'legal.imprint': 'Imprint',
+    'legal.terms': 'Terms',
+    'legal.privacy': 'Privacy',
+    'legal.shipping': 'Shipping & Returns',
   },
 
   // Swiss German conventions (ss instead of ß)
   de: {
     'meta.title': 'LONDUVE — N°01 COURAGE · Extrait de Parfum',
-    'meta.desc': 'No label, just legacy. N°01 COURAGE — Extrait de Parfum mit 42 % Ölkonzentration. 50 ml, CHF 75.95.',
+    'meta.desc': 'No label, just legacy. N°01 COURAGE — Extrait de Parfum mit 42 % Ölkonzentration. {volume}, {price}.',
     'loader': 'Wird geladen',
     'nav.courage': 'Courage',
     'nav.extrait': 'Extrait',
@@ -109,8 +121,8 @@ export const DICT = {
     'level.top': 'Kopfnote',
     'level.heart': 'Herznote',
     'level.base': 'Basisnote',
-    'note.1.name': 'Muskatnuss',
-    'note.1.text': 'Warme, helle Würze eröffnet die Duftspur — der erste Funke Mut.',
+    'note.1.name': 'Weisser Moschus',
+    'note.1.text': 'Weicher, reiner weisser Moschus eröffnet die Duftspur — der erste Funke Mut.',
     'note.2.name': 'Rose · Lilie · Jasmin',
     'note.2.text': 'Ein taufrisches Blütenherz aus Rose, Lilie und Jasmin. Sanft und doch selbstbewusst.',
     'note.3.name': 'Vanille',
@@ -123,7 +135,7 @@ export const DICT = {
     'spec.conc.v': '42 % Öl',
     'spec.vol': 'Inhalt',
     'spec.notes': 'Noten',
-    'spec.notes.v': 'Muskatnuss, Rose, Lilie, Jasmin, Vanille, Salzkaramell',
+    'spec.notes.v': 'Weisser Moschus, Rose, Lilie, Jasmin, Vanille, Salzkaramell',
     'order.price': 'Preis',
     'order.cta': 'Jetzt bestellen',
     'order.wa': 'Per WhatsApp bestellen',
@@ -133,7 +145,13 @@ export const DICT = {
     'delivery.start': 'Bestellung',
     'delivery.end': 'Bei Ihnen',
     'delivery.text': 'Ihre Bestellung wird Ihnen in 2 Wochen geliefert.',
-    'order.prefill': 'Hallo Londuve, ich möchte N°01 COURAGE — Extrait de Parfum, 50 ml (CHF 75.95) bestellen.',
+    'pay.label': 'Bezahlen mit',
+    'pay.listAria': 'Akzeptierte Zahlungsarten',
+    'pay.note': 'Sichere Zahlung mit TWINT oder Karte, abgeschlossen im Checkout unseres Zahlungspartners.',
+    'thanks.title': 'Vielen Dank.',
+    'thanks.text': 'Ihre Bestellung ist bestätigt. Die Lieferung dauert etwa 2 Wochen.',
+    'thanks.close': 'Schliessen',
+    'order.prefill': 'Hallo Londuve, ich möchte N°01 COURAGE — Extrait de Parfum, {volume} ({price}) bestellen.',
     'contact.kicker': 'Kontakt',
     'contact.title': 'Schreiben Sie uns.',
     'contact.text': 'Fragen, Bestellungen oder Kooperationen — wir antworten persönlich.',
@@ -148,11 +166,17 @@ export const DICT = {
     'contact.channels': 'Oder direkt erreichen',
     'footer.rights': 'Alle Rechte vorbehalten.',
     'footer.top': 'Nach oben',
+    'footer.dev': 'Entwickelt von',
+    'legal.aria': 'Rechtliche Informationen',
+    'legal.imprint': 'Impressum',
+    'legal.terms': 'AGB',
+    'legal.privacy': 'Datenschutz',
+    'legal.shipping': 'Versand & Rückgabe',
   },
 
   fr: {
     'meta.title': 'LONDUVE — N°01 COURAGE · Extrait de Parfum',
-    'meta.desc': 'No label, just legacy. N°01 COURAGE — Extrait de Parfum à 42 % de concentration en huile. 50 ml, CHF 75.95.',
+    'meta.desc': 'No label, just legacy. N°01 COURAGE — Extrait de Parfum à 42 % de concentration en huile. {volume}, {price}.',
     'loader': 'Chargement',
     'nav.courage': 'Courage',
     'nav.extrait': 'Extrait',
@@ -182,8 +206,8 @@ export const DICT = {
     'level.top': 'Note de tête',
     'level.heart': 'Note de cœur',
     'level.base': 'Note de fond',
-    'note.1.name': 'Noix de muscade',
-    'note.1.text': 'Une épice chaude et lumineuse ouvre le sillage — la première étincelle de courage.',
+    'note.1.name': 'Musc blanc',
+    'note.1.text': 'Un musc blanc doux et pur ouvre le sillage — la première étincelle de courage.',
     'note.2.name': 'Rose · Lys · Jasmin',
     'note.2.text': 'Un cœur floral perlé de rosée : rose, lys et jasmin. Doux, mais assuré.',
     'note.3.name': 'Vanille',
@@ -196,7 +220,7 @@ export const DICT = {
     'spec.conc.v': '42 % d’huile',
     'spec.vol': 'Contenance',
     'spec.notes': 'Notes',
-    'spec.notes.v': 'Noix de muscade, rose, lys, jasmin, vanille, caramel salé',
+    'spec.notes.v': 'Musc blanc, rose, lys, jasmin, vanille, caramel salé',
     'order.price': 'Prix',
     'order.cta': 'Commander',
     'order.wa': 'Commander via WhatsApp',
@@ -206,7 +230,13 @@ export const DICT = {
     'delivery.start': 'Commande',
     'delivery.end': 'Chez vous',
     'delivery.text': 'Votre commande vous est livrée en 2 semaines.',
-    'order.prefill': 'Bonjour Londuve, je souhaite commander N°01 COURAGE — Extrait de Parfum, 50 ml (CHF 75.95).',
+    'pay.label': 'Payer avec',
+    'pay.listAria': 'Moyens de paiement acceptés',
+    'pay.note': 'Paiement sécurisé par TWINT ou carte, finalisé sur la page de paiement de notre partenaire.',
+    'thanks.title': 'Merci.',
+    'thanks.text': 'Votre commande est confirmée. La livraison prend environ 2 semaines.',
+    'thanks.close': 'Fermer',
+    'order.prefill': 'Bonjour Londuve, je souhaite commander N°01 COURAGE — Extrait de Parfum, {volume} ({price}).',
     'contact.kicker': 'Contact',
     'contact.title': 'Écrivez-nous.',
     'contact.text': 'Questions, commandes ou collaborations — nous répondons personnellement.',
@@ -221,6 +251,12 @@ export const DICT = {
     'contact.channels': 'Ou contactez-nous directement',
     'footer.rights': 'Tous droits réservés.',
     'footer.top': 'Haut de page',
+    'footer.dev': 'Développé par',
+    'legal.aria': 'Informations légales',
+    'legal.imprint': 'Mentions légales',
+    'legal.terms': 'CGV',
+    'legal.privacy': 'Confidentialité',
+    'legal.shipping': 'Livraison & retours',
   },
 };
 
@@ -238,7 +274,11 @@ export function detectLang() {
   return nav.find((l) => LANGS.includes(l)) || 'en';
 }
 
-export const t = (key) => (DICT[current] && DICT[current][key]) ?? DICT.en[key] ?? key;
+let vars = {};
+/** Values substituted into {placeholders} in the strings (e.g. {price}, {volume} from CONFIG.product). */
+export const setVars = (v) => { vars = { ...vars, ...v }; };
+const fill = (s) => (typeof s === 'string' ? s.replace(/\{(\w+)\}/g, (m, k) => (k in vars ? vars[k] : m)) : s);
+export const t = (key) => fill((DICT[current] && DICT[current][key]) ?? DICT.en[key] ?? key);
 export const getLang = () => current;
 export const onLangChange = (fn) => listeners.add(fn);
 

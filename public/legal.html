@@ -1,0 +1,84 @@
+<!doctype html>
+<!--
+  ────────────────────────────────────────────────────────────────
+  LONDUVE — legal pages: PLACEHOLDER
+  The footer links (Imprint, Terms, Privacy, Shipping & Returns) open this page
+  until CONFIG.legal in src/config.js points to the real pages.
+  The CLIENT must supply every text below (ideally checked by a lawyer / fiduciary).
+  Don't publish the shop or request TWINT before these are filled in:
+  TWINT requires a reachable site whose legal notice / terms show the company name
+  and legal form, full business address, and an email or phone number.
+  When the real texts are in, remove the noindex meta tag below.
+  ────────────────────────────────────────────────────────────────
+-->
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="robots" content="noindex" />
+  <title>LONDUVE — Legal</title>
+  <link rel="icon" type="image/png" href="favicon.png" />
+  <style>
+    :root { color-scheme: dark; --gold: #c9a46a; --gold-hi: #f1d9a8; --cream: #efe6d8; --muted: rgba(239, 230, 216, 0.6); --line: rgba(201, 164, 106, 0.22); }
+    * { box-sizing: border-box; }
+    body { margin: 0; background: #050404; color: var(--cream); font: 300 16px/1.65 Georgia, 'Times New Roman', serif; }
+    main { max-width: 760px; margin: 0 auto; padding: 56px 16px 96px; }
+    a { color: var(--gold-hi); }
+    .back { font: 400 11px/1 ui-monospace, Menlo, monospace; letter-spacing: 0.18em; text-transform: uppercase; text-decoration: none; }
+    h1 { font-weight: 300; font-size: clamp(34px, 6vw, 52px); letter-spacing: 0.08em; margin: 36px 0 8px; }
+    .lead { color: var(--muted); margin: 0 0 48px; }
+    nav { display: flex; flex-wrap: wrap; gap: 8px 24px; margin-bottom: 40px; font: 400 11px/1.4 ui-monospace, Menlo, monospace; letter-spacing: 0.14em; text-transform: uppercase; }
+    section { padding: 32px 0; border-top: 1px solid var(--line); scroll-margin-top: 24px; }
+    h2 { font-weight: 400; font-size: 24px; margin: 0 0 16px; color: var(--gold-hi); }
+    h2 small { display: block; margin-top: 4px; font: 400 11px/1.4 ui-monospace, Menlo, monospace; letter-spacing: 0.14em; text-transform: uppercase; color: var(--muted); }
+    .todo { border: 1px dashed var(--gold); border-radius: 10px; padding: 16px 18px; color: var(--muted); font: 400 13px/1.6 ui-monospace, Menlo, monospace; }
+    .todo b { color: var(--gold); font-weight: 400; }
+    dl { margin: 12px 0 0; display: grid; grid-template-columns: max-content 1fr; gap: 6px 16px; }
+    dt { color: var(--cream); }
+    dd { margin: 0; }
+  </style>
+</head>
+<body>
+  <main>
+    <a class="back" href="./">← LONDUVE</a>
+    <h1>LONDUVE</h1>
+    <p class="lead">Legal information · Rechtliche Informationen · Informations légales</p>
+    <nav aria-label="Legal">
+      <a href="#imprint">Imprint · Impressum</a>
+      <a href="#terms">Terms · AGB · CGV</a>
+      <a href="#privacy">Privacy · Datenschutz</a>
+      <a href="#shipping">Shipping &amp; Returns · Versand &amp; Rückgabe</a>
+    </nav>
+
+    <section id="imprint">
+      <h2>Imprint<small>Impressum · Mentions légales</small></h2>
+      <div class="todo">
+        <b>[ PLACEHOLDER — to be provided by the business ]</b>
+        <dl>
+          <dt>Company name &amp; legal form</dt><dd>[ … ]</dd>
+          <dt>Street &amp; number</dt><dd>[ … ]</dd>
+          <dt>Postal code &amp; city</dt><dd>[ … ]</dd>
+          <dt>Email</dt><dd>[ … ]</dd>
+          <dt>Phone</dt><dd>[ … ]</dd>
+          <dt>Other details</dt><dd>[ … ]</dd>
+        </dl>
+      </div>
+    </section>
+
+    <section id="terms">
+      <h2>Terms &amp; Conditions<small>AGB · Conditions générales de vente</small></h2>
+      <p class="todo"><b>[ PLACEHOLDER — text to be provided by the business ]</b></p>
+    </section>
+
+    <section id="privacy">
+      <h2>Privacy Policy<small>Datenschutzerklärung · Politique de confidentialité</small></h2>
+      <p class="todo"><b>[ PLACEHOLDER — text to be provided by the business ]</b></p>
+    </section>
+
+    <section id="shipping">
+      <h2>Shipping &amp; Returns<small>Versand &amp; Rückgabe · Livraison &amp; retours</small></h2>
+      <p class="todo"><b>[ PLACEHOLDER — text to be provided by the business ]</b></p>
+    </section>
+  </main>
+</body>
+</html>

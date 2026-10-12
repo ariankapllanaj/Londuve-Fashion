@@ -44,6 +44,7 @@ body {
 }
 body.is-loading { overflow: hidden; }
 img { display: block; max-width: 100%; height: auto; }
+[hidden] { display: none !important; }
 a { color: inherit; text-decoration: none; }
 button { font: inherit; color: inherit; background: none; border: 0; cursor: pointer; padding: 0; }
 ::selection { background: var(--gold); color: var(--black); }
@@ -332,6 +333,18 @@ main { position: relative; z-index: 2; }
   58% { opacity: 0; } 64% { opacity: 1; } 92% { opacity: 1; } 100% { left: calc(100% - 15px); opacity: 0; }
 }
 .delivery__ends { display: flex; justify-content: space-between; margin-top: 12px; color: var(--muted); font-size: 10px; }
+/* accepted payment methods (only when a checkout link is configured) */
+.paymethods { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 16px; margin: -16px 0 26px; }
+.paymethods__label { color: var(--faint); font-size: 10px; }
+.paymethods__list { display: flex; flex-wrap: wrap; align-items: center; row-gap: 6px; list-style: none; margin: 0; padding: 0; color: var(--cream); font-size: 10px; letter-spacing: 0.14em; }
+.paymethods__list li { display: inline-flex; align-items: center; }
+.paymethods__list li + li::before { content: '·'; margin: 0 10px; color: var(--gold); }
+.paymethods__list img { display: block; height: 18px; width: auto; }
+.order[data-checkout="off"] .paymethods,
+.order[data-checkout="off"] .order__note--pay,
+.order[data-checkout="on"] .order__note--contact { display: none; }
+.order__note--pay { display: flex; align-items: flex-start; gap: 10px; }
+.order__note--pay svg { flex: none; width: 15px; height: 15px; margin-top: 2px; fill: none; stroke: var(--gold); stroke-width: 1.3; stroke-linejoin: round; stroke-linecap: round; }
 .order__actions { display: flex; flex-wrap: wrap; gap: 12px; margin-bottom: 18px; }
 .order__note { margin: 0; font-size: 13px; color: var(--faint); }
 
@@ -366,6 +379,30 @@ main { position: relative; z-index: 2; }
 .footer__mark .wordmark { width: 100%; max-width: none; opacity: 0.9; }
 .footer__row { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 14px 30px; margin-top: 54px; padding-top: 24px; border-top: 1px solid var(--line-soft); color: var(--faint); font-size: 10px; }
 .footer__row a:hover { color: var(--gold-hi); }
+.footer__credit a { color: var(--muted); border-bottom: 1px solid var(--line); padding-bottom: 1px; transition: color 0.3s, border-color 0.3s; }
+.footer__credit a:hover { color: var(--gold-hi); border-color: var(--gold-hi); }
+
+/* ── thank-you banner (?paid=1) ─────────────────────────── */
+.thanks {
+  position: fixed; left: 0; right: 0; margin-inline: auto; bottom: 28px; z-index: 90; width: min(560px, calc(100vw - 32px));
+  display: grid; grid-template-columns: auto 1fr auto; align-items: center; gap: 18px; padding: 20px 20px 20px 24px;
+  background: rgba(12, 10, 9, 0.94); border: 1px solid var(--line); border-radius: 18px;
+  box-shadow: 0 30px 80px rgba(0, 0, 0, 0.6), inset 0 0 0 1px rgba(241, 217, 168, 0.05);
+  -webkit-backdrop-filter: blur(14px); backdrop-filter: blur(14px);
+}
+.thanks[hidden] { display: none; }
+.thanks__star { width: 18px; height: 18px; background: var(--gold-hi); clip-path: polygon(50% 0, 60% 40%, 100% 50%, 60% 60%, 50% 100%, 40% 60%, 0 50%, 40% 40%); }
+.thanks__title { margin: 0 0 2px; font-family: var(--f-display); font-weight: 300; font-size: 28px; line-height: 1.1; color: var(--gold-hi); }
+.thanks__text { margin: 0; font-size: 14px; color: var(--cream); }
+.thanks__close { width: 38px; height: 38px; border-radius: 50%; border: 1px solid var(--line); display: grid; place-items: center; color: var(--muted); transition: color 0.3s, background 0.3s, border-color 0.3s; }
+.thanks__close svg { width: 14px; height: 14px; fill: none; stroke: currentColor; stroke-width: 1.5; stroke-linecap: round; }
+.thanks__close:hover { color: var(--black); background: var(--gold); border-color: var(--gold); }
+
+/* ── footer legal links ───────────────────────────────────── */
+.footer__legal { display: flex; flex-wrap: wrap; gap: 10px 30px; margin-top: 48px; font-size: 10px; color: var(--muted); }
+.footer__legal a { transition: color 0.3s; }
+.footer__legal a:hover { color: var(--gold-hi); }
+.footer__legal + .footer__row { margin-top: 22px; }
 
 /* ── reveal helpers ───────────────────────────────────────── */
 [data-reveal] { opacity: 0; transform: translateY(30px); }
@@ -434,6 +471,12 @@ main { position: relative; z-index: 2; }
   .channel em { grid-column: 2; text-align: left; }
   .form__submit { justify-self: stretch; }
   .footer__row { flex-direction: column; }
+  .thanks { bottom: 16px; gap: 14px; padding: 16px 14px 16px 18px; }
+  .thanks__title { font-size: 24px; }
+  .thanks__text { font-size: 13px; }
+  .paymethods { margin-top: -12px; }
+  .paymethods__list { font-size: 9.5px; letter-spacing: 0.08em; }
+  .paymethods__list li + li::before { margin: 0 7px; }
 }
 @media (max-width: 820px) and (max-height: 700px) {
   .notes__frame { width: min(54vw, 240px); top: 140px; }
